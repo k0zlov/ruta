@@ -182,7 +182,22 @@ extension RouterParams on Request {
   }
 }
 
+/// Represents a route entry in the router.
+///
+/// This class encapsulates an HTTP route definition, including its HTTP method,
+/// path pattern, request handler, optional middleware, and parameter extraction.
+///
+/// - Supports dynamic route parameters using named placeholders.
+/// - Ensures valid route definitions.
+/// - Provides methods for matching and invoking routes.
 class RouterEntry {
+  /// Factory constructor for [RouterEntry], which creates and validates a new route entry.
+  ///
+  /// - [verb]: The HTTP method (e.g., GET, POST).
+  /// - [route]: The route pattern, which must start with `/`.
+  /// - [handler]: The function that handles requests matching the route.
+  /// - [middleware]: Optional middleware to wrap the handler.
+  /// - [mounted]: Whether this route is part of a mounted sub-router.
   factory RouterEntry(
     String verb,
     String route,
@@ -190,8 +205,10 @@ class RouterEntry {
     Middleware? middleware,
     bool mounted = false,
   }) {
+    // Default middleware to a pass-through function if none is provided.
     middleware ??= (Handler fn) => fn;
 
+    // Ensure that the route starts with a `/` to enforce proper URL structure.
     if (!route.startsWith('/')) {
       throw ArgumentError.value(
         route,
@@ -202,7 +219,10 @@ class RouterEntry {
 
     final params = <String>[];
     var pattern = '';
+
+    // Parse route pattern and extract named parameters.
     for (final m in _parser.allMatches(route)) {
+      // ignore: use_string_buffers
       pattern += RegExp.escape(m[1]!);
       if (m[2] != null) {
         params.add(m[2]!);
@@ -229,6 +249,7 @@ class RouterEntry {
     );
   }
 
+  /// Private constructor used by the factory method.
   RouterEntry._(
     this.verb,
     this.route,
@@ -239,16 +260,23 @@ class RouterEntry {
     this._mounted,
   );
 
-  static final RegExp _parser = RegExp(r'([^<]*)(?:<([^>|]+)(?:\|([^>]*))?>)?');
+  /// Regular expression parser for extracting route parameters.
+  static final RegExp _parser =
+      RegExp(r'([^<]*)(?:<([^>|]+)(?:\|([^>]*)?)?>)?');
 
+  /// HTTP method
   final String verb;
-  final String route;
-  final Function _handler;
-  final Middleware _middleware;
-  final RegExp _routePattern;
-  final List<String> _params;
-  final bool _mounted;
 
+  /// Route pattern
+  final String route;
+  final Function _handler; // Handler function
+  final Middleware _middleware; // Middleware applied to the handler
+  final RegExp _routePattern; // Compiled regex for route matching
+  final List<String> _params; // Extracted parameter names
+  final bool _mounted; // Whether the route is part of a mounted router
+
+  /// Matches the given [path] against this route's pattern.
+  /// Returns a map of extracted parameters if matched, otherwise `null`.
   Map<String, String>? match(String path) {
     final m = _routePattern.firstMatch(path);
     if (m == null) return null;
@@ -259,6 +287,8 @@ class RouterEntry {
     return params;
   }
 
+  /// Invokes the registered handler for this route.
+  /// Applies middleware and extracts parameters before executing the handler.
   Future<Response> invoke(Request request, Map<String, String> params) async {
     final shelf.Request shelfRequest = request._request.change(
       context: {'shelf_router/params': params},
@@ -268,8 +298,7 @@ class RouterEntry {
 
     return await _middleware((request) async {
       if (_mounted) {
-        // if this route is mounted, we include
-        // the route entry params so that the mount can extract the parameters/
+        // Pass parameters for mounted routes.
         // ignore: avoid_dynamic_calls
         return await _handler(updatedRequest, _params) as Response;
       }
@@ -279,6 +308,7 @@ class RouterEntry {
         return await _handler(updatedRequest) as Response;
       }
 
+      // Invoke the handler with extracted parameters.
       final dynamic result = await Function.apply(_handler, <dynamic>[
         updatedRequest,
         ..._params.map((n) => params[n]),
@@ -288,6 +318,7 @@ class RouterEntry {
   }
 }
 
+/// Determines if a regex pattern does not capture values.
 bool _isNoCapture(String regexp) {
   return RegExp('^(?:$regexp)|.*\$').firstMatch('')!.groupCount == 0;
 }

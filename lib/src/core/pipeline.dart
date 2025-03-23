@@ -1,9 +1,9 @@
 import 'package:ruta/ruta.dart';
-import 'package:ruta/src/core/middleware.dart';
 
 /// A helper that makes it easy to compose a set of [Middleware] and a
 /// [Handler].
 class Pipeline {
+  /// Constructor for pipeline
   const Pipeline();
 
   /// Returns a new [Pipeline] with [middleware] added to the existing set of

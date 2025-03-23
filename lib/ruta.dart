@@ -1,6 +1,4 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
+/// Ruta Framework
 library;
 
 export 'package:ruta/src/core/_internal.dart'

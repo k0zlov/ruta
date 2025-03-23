@@ -1,3 +1,6 @@
+# Changelog
+
 ## 0.1.0
 
-- Initial version.
+- Initial release of Ruta framework.
+- Added support for routing, middleware, and OpenAPI annotations.

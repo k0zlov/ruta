@@ -1,5 +1,19 @@
 import 'package:ruta/src/core/validation/field.dart';
 
+/// Converts a Dart [Type] into an equivalent OpenAPI type.
+///
+/// This function maps common Dart types to OpenAPI schema types:
+/// - `String` → `'string'`
+/// - `int` → `'integer'`
+/// - `double` → `'number'`
+/// - `bool` → `'boolean'`
+/// - `List<T>` → `'array'`
+/// - `Map<String, dynamic>` → `'object'`
+///
+/// If the type is not explicitly recognized, it defaults to `'object'`.
+///
+/// - [dartType] The Dart type to be converted.
+/// - Returns the corresponding OpenAPI type as a string.
 String typeToOpenApiType(Type dartType) {
   if (dartType == String) {
     return 'string';
@@ -18,8 +32,26 @@ String typeToOpenApiType(Type dartType) {
   return 'object'; // Fallback for unknown types
 }
 
+/// Converts a [Field] object into an OpenAPI schema representation.
+///
+/// This function takes a `Field<Object>` instance and generates a
+/// corresponding OpenAPI schema definition.
+/// - Handles primitive types (`String`, `int`, `double`, `bool`).
+/// - Converts `Map<String, dynamic>` into an OpenAPI object schema.
+/// - Recursively processes child fields if the field is an object.
+///
+/// Example:
+/// ```dart
+/// final field = Field<String>(name: 'username', type: String, isRequired: true);
+/// final schema = fieldToSchema(field);
+/// print(schema); // Outputs: { "type": "string" }
+/// ```
+///
+/// - [field] The field to be converted into an OpenAPI schema.
+/// - Returns a map representing the OpenAPI schema.
 Map<String, dynamic> fieldToSchema(Field<Object> field) {
   final type = field.type;
+
   if (type == String) {
     return {'type': 'string'};
   } else if (type == int) {
@@ -40,5 +72,6 @@ Map<String, dynamic> fieldToSchema(Field<Object> field) {
           .toList(),
     };
   }
-  return {'type': 'object'};
+
+  return {'type': 'object'}; // Default fallback
 }

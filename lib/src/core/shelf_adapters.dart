@@ -45,12 +45,24 @@ shelf.Handler toShelfHandler(Handler handler) {
   };
 }
 
-Middleware logRequests() => fromShelfMiddleware(shelf.logRequests());
+/// Converted from [shelf]
+Middleware logRequests(
+  void Function(
+    String message,
+    // ignore: avoid_positional_boolean_parameters
+    bool isError,
+  ) logger,
+) =>
+    fromShelfMiddleware(
+      shelf.logRequests(logger: logger),
+    );
 
+/// Converted from [shelf]
 Middleware corsHeaders() => fromShelfMiddleware(
       shelf_cors_headers.corsHeaders(),
     );
 
+/// Converted from [shelf]
 Handler createStaticFileHandler({String path = 'public'}) {
   return fromShelfHandler(createStaticHandler(path));
 }

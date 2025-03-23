@@ -2,6 +2,7 @@ part of '_internal.dart';
 
 /// An HTTP request for the Ruta framework.
 class Request {
+  /// Default constructor
   Request(
     String method,
     Uri uri, {
@@ -90,6 +91,7 @@ class Request {
   /// The original requested [Uri].
   Uri get uri => _request.requestedUri;
 
+  /// The context from [shelf] request
   Map<String, Object> get context => _request.context;
 
   /// The HTTP headers with case-insensitive keys.
@@ -152,6 +154,7 @@ class Request {
     );
   }
 
+  /// Request Data after validation
   final Map<String, dynamic> data = {};
 
   /// Validates the request body and query parameters against the provided schemas.
@@ -164,7 +167,7 @@ class Request {
     final errors = <String>[];
     final Set<String> checkedParams = {};
 
-    void _validateParams({
+    void validateParams({
       required String name,
       required Map<String, dynamic> target,
       required List<Field<Object>> params,
@@ -203,7 +206,7 @@ class Request {
         return ValidationResult.invalid(['Request body type is invalid']);
       }
 
-      _validateParams(
+      validateParams(
         name: 'Body',
         target: map,
         params: body,
@@ -211,7 +214,7 @@ class Request {
     }
 
     if (query.isNotEmpty) {
-      _validateParams(
+      validateParams(
         name: 'Query',
         target: uri.queryParameters,
         params: query,
