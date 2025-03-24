@@ -1,6 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
-import 'package:shelf/shelf.dart';
+
+import 'package:ruta/ruta.dart';
 
 /// Represents an API exception that can be converted into an HTTP response.
 ///
@@ -118,9 +118,9 @@ class ApiException implements Exception {
   /// ```dart
   /// final response = ApiException.badRequest('Invalid data').toResponse();
   /// ```
-  Response toResponse() => Response(
-        statusCode,
-        body: jsonEncode(toMap()),
+  Response toResponse() => Response.json(
+        statusCode: statusCode,
+        body: toMap(),
         headers: {'Content-Type': 'application/json'},
       );
 

@@ -14,6 +14,7 @@ export 'package:ruta/src/core/_internal.dart'
         serve,
         toShelfHandler,
         toShelfMiddleware;
+export 'package:ruta/src/core/api_exceptions.dart';
 export 'package:ruta/src/core/endpoint.dart';
 export 'package:ruta/src/core/handlers.dart';
 export 'package:ruta/src/core/hot_reload.dart';
