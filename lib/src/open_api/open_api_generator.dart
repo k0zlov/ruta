@@ -132,10 +132,11 @@ class OpenApiGenerator {
             response.statusCode.toString(): response.innerMap(),
         };
 
-        // Store the processed path
-        paths[fullPath] = {
-          endpoint.method.name.toLowerCase(): operation,
-        };
+        // Initialize the path entry if it doesn't exist
+        paths[fullPath] ??= <String, dynamic>{};
+
+        // Add or update the method for this path
+        paths[fullPath]![endpoint.method.name.toLowerCase()] = operation;
       }
     }
 

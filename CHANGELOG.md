@@ -1,3 +1,8 @@
+## 0.1.3
+
+- Adding default run function
+- Fixing open api generator
+
 ## 0.1.2
 
 - Converting ApiException to Ruta Response
