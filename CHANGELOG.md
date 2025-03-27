@@ -1,3 +1,7 @@
+## 0.1.5
+
+- Some general improvements
+
 ## 0.1.4
 
 - Removing endpoints getter from Route

@@ -47,6 +47,58 @@ class Endpoint {
     this.query,
   });
 
+  /// A named constructor to create an HTTP GET endpoint.
+  Endpoint.get({
+    required this.path,
+    required this.handler,
+    this.middlewares = const [],
+    this.authRequired = true,
+    this.responses = const [],
+    this.summary,
+    this.description,
+    this.body,
+    this.query,
+  }) : method = HttpMethod.get;
+
+  /// A named constructor to create an HTTP POST endpoint.
+  Endpoint.post({
+    required this.path,
+    required this.handler,
+    this.middlewares = const [],
+    this.authRequired = true,
+    this.responses = const [],
+    this.summary,
+    this.description,
+    this.body,
+    this.query,
+  }) : method = HttpMethod.post;
+
+  /// A named constructor to create an HTTP PUT endpoint.
+  Endpoint.put({
+    required this.path,
+    required this.handler,
+    this.middlewares = const [],
+    this.authRequired = true,
+    this.responses = const [],
+    this.summary,
+    this.description,
+    this.body,
+    this.query,
+  }) : method = HttpMethod.post;
+
+  /// A named constructor to create an HTTP DELETE endpoint.
+  Endpoint.delete({
+    required this.path,
+    required this.handler,
+    this.middlewares = const [],
+    this.authRequired = true,
+    this.responses = const [],
+    this.summary,
+    this.description,
+    this.body,
+    this.query,
+  }) : method = HttpMethod.delete;
+
   // ─────────────────────────────────────────────────────────────
   // Core Endpoint Properties
   // ─────────────────────────────────────────────────────────────

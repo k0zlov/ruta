@@ -6,7 +6,7 @@ import 'package:ruta/src/open_api/specification.dart';
 
 /// Abstract class for routes. Every route will inherit from this class
 abstract class Route {
-  /// Constant constructor
+  /// Constructor
   Route();
 
   /// Returns the route name by extracting it from the class name
@@ -23,7 +23,7 @@ abstract class Route {
   OpenApiExternalDocs? get externalDocs => null;
 
   /// List of middleware for request processing
-  List<Middleware> get middlewares;
+  List<Middleware> get middlewares => [];
 
   /// List of endpoints for the route
   List<Endpoint> endpoints = [];
