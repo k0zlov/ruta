@@ -1,7 +1,7 @@
 part of '_internal.dart';
 
 /// Convert from [shelf.Middleware] into [Middleware].
-Middleware fromShelfMiddleware(shelf.Middleware middleware) {
+MiddlewareFunc fromShelfMiddleware(shelf.Middleware middleware) {
   return (handler) {
     return (request) async {
       final response = await middleware(
@@ -16,7 +16,7 @@ Middleware fromShelfMiddleware(shelf.Middleware middleware) {
 }
 
 /// Convert from [Middleware] into [shelf.Middleware].
-shelf.Middleware toShelfMiddleware(Middleware middleware) {
+shelf.Middleware toShelfMiddleware(MiddlewareFunc middleware) {
   return (innerHandler) {
     return (request) async {
       final response = await middleware((request) async {
@@ -46,21 +46,30 @@ shelf.Handler toShelfHandler(Handler handler) {
 }
 
 /// Converted from [shelf]
-Middleware logRequests(
-  void Function(
+class LogRequestsMiddleware extends Middleware {
+  LogRequestsMiddleware({
+    super.middleware,
+    required this.logger,
+  });
+
+  final void Function(
     String message,
     // ignore: avoid_positional_boolean_parameters
     bool isError,
-  ) logger,
-) =>
-    fromShelfMiddleware(
-      shelf.logRequests(logger: logger),
-    );
+  ) logger;
 
-/// Converted from [shelf]
-Middleware corsHeaders() => fromShelfMiddleware(
-      shelf_cors_headers.corsHeaders(),
-    );
+  @override
+  MiddlewareFunc get middleware => fromShelfMiddleware(
+        shelf.logRequests(logger: logger),
+      );
+}
+
+class CorsHeadersMiddleware extends Middleware {
+  @override
+  MiddlewareFunc get middleware => fromShelfMiddleware(
+        shelf_cors_headers.corsHeaders(),
+      );
+}
 
 /// Converted from [shelf]
 Handler createStaticFileHandler({String path = 'public'}) {

@@ -1,3 +1,6 @@
+/// for ruta_generator
+library ruta;
+
 import 'package:ruta/open_api.dart';
 import 'package:ruta/ruta.dart';
 import 'package:ruta/src/core/api_exceptions.dart';
@@ -120,6 +123,12 @@ class Endpoint {
         query: query ?? [],
       );
 
+      Handler handlerWithMiddleware = handler;
+
+      for (final Middleware mw in middlewares) {
+        handlerWithMiddleware = handlerWithMiddleware.use(mw);
+      }
+
       // If validation fails, return a 400 Bad Request response
       if (!result.isValid) {
         throw ApiException.badRequest(
@@ -129,7 +138,7 @@ class Endpoint {
       }
 
       // Proceed with the original request handler
-      return handler(request);
+      return handlerWithMiddleware(request);
     };
   }
 }

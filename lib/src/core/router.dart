@@ -202,7 +202,7 @@ class RouterEntry {
     String verb,
     String route,
     Handler handler, {
-    Middleware? middleware,
+    MiddlewareFunc? middleware,
     bool mounted = false,
   }) {
     // Default middleware to a pass-through function if none is provided.
@@ -270,7 +270,7 @@ class RouterEntry {
   /// Route pattern
   final String route;
   final Function _handler; // Handler function
-  final Middleware _middleware; // Middleware applied to the handler
+  final MiddlewareFunc _middleware; // Middleware applied to the handler
   final RegExp _routePattern; // Compiled regex for route matching
   final List<String> _params; // Extracted parameter names
   final bool _mounted; // Whether the route is part of a mounted router

@@ -19,3 +19,5 @@ part 'router.dart';
 part 'serve.dart';
 
 part 'shelf_adapters.dart';
+
+part 'middleware.dart';

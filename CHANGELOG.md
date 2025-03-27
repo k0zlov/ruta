@@ -1,3 +1,8 @@
+## 0.1.4
+
+- Removing endpoints getter from Route
+- Creating Middleware class
+
 ## 0.1.3
 
 - Adding default run function
