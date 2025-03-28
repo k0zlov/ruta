@@ -1,3 +1,7 @@
+## 0.1.8
+
+- Adapting default run function
+
 ## 0.1.7
 
 - Updating missing exports
