@@ -47,11 +47,13 @@ shelf.Handler toShelfHandler(Handler handler) {
 
 /// Converted from [shelf]
 class LogRequestsMiddleware extends Middleware {
+  /// Constructor for Middleware
   LogRequestsMiddleware({
-    super.middleware,
     required this.logger,
+    super.middleware,
   });
 
+  /// Logger function that will be used in shelf middleware
   final void Function(
     String message,
     // ignore: avoid_positional_boolean_parameters
@@ -64,6 +66,7 @@ class LogRequestsMiddleware extends Middleware {
       );
 }
 
+/// Converted from [shelf]
 class CorsHeadersMiddleware extends Middleware {
   @override
   MiddlewareFunc get middleware => fromShelfMiddleware(

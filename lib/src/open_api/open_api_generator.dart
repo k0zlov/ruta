@@ -1,3 +1,4 @@
+// ignore_for_file: inference_failure_on_collection_literal
 import 'dart:convert';
 import 'dart:io';
 import 'package:ruta/open_api.dart';
@@ -136,6 +137,7 @@ class OpenApiGenerator {
         paths[fullPath] ??= <String, dynamic>{};
 
         // Add or update the method for this path
+        // ignore: avoid_dynamic_calls
         paths[fullPath]![endpoint.method.name.toLowerCase()] = operation;
       }
     }

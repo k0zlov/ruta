@@ -4,20 +4,25 @@ part of '_internal.dart';
 /// by wrapping a [Handler].
 typedef MiddlewareFunc = Handler Function(Handler handler);
 
-/// Middleware something
+/// Middleware class that wraps simple middleware function
 class Middleware {
+  /// Middleware constructor, defaults middleware
   Middleware({
     MiddlewareFunc? middleware,
   }) : middleware = middleware ?? ((_) => _);
 
+  /// Default Middleware that will be used in call function
   final MiddlewareFunc middleware;
 
+  /// Middleware function that will be executed, just as basic middleware function
   Handler call(Handler handler) => middleware(handler);
 
+  /// Factory function to create middleware instance from shelf middleware
   static Middleware fromShelfMiddleware(shelf.Middleware middleware) {
     return fromShelfMiddleware(middleware);
   }
 
+  /// Convert middleware to shelf middleware
   shelf.Middleware toShelf() {
     return toShelfMiddleware(middleware);
   }

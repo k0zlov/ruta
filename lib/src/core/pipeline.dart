@@ -1,5 +1,4 @@
 import 'package:ruta/ruta.dart';
-import 'package:ruta/src/core/_internal.dart';
 
 /// A helper that makes it easy to compose a set of [Middleware] and a
 /// [Handler].

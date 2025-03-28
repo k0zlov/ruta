@@ -3,7 +3,6 @@ library ruta;
 
 import 'package:ruta/open_api.dart';
 import 'package:ruta/ruta.dart';
-import 'package:ruta/src/core/api_exceptions.dart';
 
 /// Represents an API endpoint in the Ruta framework.
 ///
