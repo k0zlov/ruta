@@ -20,6 +20,7 @@ export 'package:ruta/src/core/_internal.dart'
 export 'package:ruta/src/core/api_exceptions.dart';
 export 'package:ruta/src/core/default_ruta_run.dart';
 export 'package:ruta/src/core/endpoint.dart';
+export 'package:ruta/src/core/get_or_async.dart';
 export 'package:ruta/src/core/handlers.dart';
 export 'package:ruta/src/core/hot_reload.dart';
 export 'package:ruta/src/core/http_method.dart';

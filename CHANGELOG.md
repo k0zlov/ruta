@@ -1,3 +1,11 @@
+## 0.1.7
+
+- Updating missing exports
+
+## 0.1.6
+
+- Creating getOrAsync extension on GetIt
+
 ## 0.1.5
 
 - Some general improvements
