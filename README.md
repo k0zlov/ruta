@@ -16,75 +16,64 @@ APIs and web servers with a focus on developer productivity and performance.
 1. Add `ruta` to your `pubspec.yaml`:
    ```yaml
    dependencies:
-     ruta: ^0.1.0
+     ruta: ^0.1.9
+     getIt: ^8.0.3
+     injectable: ^2.3.2
    dev_dependencies:
-     ruta_generator: ^0.1.0
+     build_runner: ^2.4.13
+     injectable_generator: ^2.6.2
+     ruta_generator: ^0.1.8
 
-2. Create a route using Ruta's annotation-based system:
+2. Create a route using Ruta's annotation-based system with dependency injection:
    ```dart
+   import 'package:injectable/injectable.dart';
    import 'package:ruta/annotations.dart';
-   import 'package:ruta/open_api.dart';
    import 'package:ruta/ruta.dart';
-   
-   @RutaRoute()
-   class TestRoute extends Route {
-     const TestRoute();
-   
-     @override
-     List<Endpoint> get endpoints => [
-           Endpoint(
-             path: 'test/<id>',
-             method: HttpMethod.get,
-             summary: 'Summary of the test endpoint',
-             description: 'Some test endpoint description',
-             authRequired: true,
-             body: [
-               Field<String>('password', isRequired: false),
-               Field<Map<String, dynamic>>(
-                 'items',
-                 children: [
-                   Field<int>('something'),
-                 ],
-               ),
-             ],
-             responses: [
-               OpenApiResponse(
-                 statusCode: 200,
-                 description: 'Provides email',
-                 properties: [
-                   Field<String>('email', isRequired: false),
-                 ],
-               ),
-             ],
-             query: [
-               Field<int>('name'),
-             ],
-             handler: (req) {
-               print(434);
-               return Response.json(body: {'email': 'example@gmail.com'});
-             },
-           ),
-         ];
-   
-     @override
-     List<Middleware> get middlewares => [
-           (Handler handler) {
-             return (req) {
-               print(req.uri);
-               return handler(req);
-             };
-           },
-         ];
+
+   @module
+   abstract class DependencyContainer {
+     @Named('apiVersion')
+     String get apiVersion => '0.0.1';
    }
+
+   @rutaRoute
+   class InfoRoute extends Route {
+     InfoRoute({
+       @Named('apiVersion') required this.apiVersion,
+     });
+
+     final String apiVersion;
+
+     Endpoint get index {
+       return Endpoint.get(
+         path: '',
+         handler: (req) {
+           return Response.json(
+             body: {'apiVersion': apiVersion},
+           );
+         },
+       );
+      }
+     }
 
 3. Activate Ruta CLI:
    ```bash
    dart pub global activate ruta_cli
 
-4. Generate and run your server using the Ruta CLI:
+4. Generate code for server using ruta_cli:
+   ```bash
+   ruta build
+   ```
+   or use build_runner
+   ```bash
+   dart run build_runner build --delete-conflicting-outputs
+   ```
+
+5. Run your server using the Ruta CLI:
    ```bash
    ruta run
-   
-Your server will start, and you can test the endpoint at http://localhost:8080/test/123?name=42
+   ```
+
+Your server will start, and you can test the endpoint at http://localhost:8080/info
 
 

@@ -1,6 +1,6 @@
 name: ruta
 description: A lightweight and flexible backend framework for Dart, inspired by dart_frog.
-version: 0.1.9
+version: 0.1.10
 repository: https://github.com/k0zlov/ruta
 homepage: https://github.com/k0zlov/ruta
 license: MIT
@@ -11,6 +11,7 @@ environment:
 dependencies:
   collection: ^1.19.1
   get_it: ^8.0.3
+  injectable: ^2.5.0
   shelf: ^1.4.2
   shelf_cors_headers: ^0.1.5
   shelf_hotreload: ^1.5.0

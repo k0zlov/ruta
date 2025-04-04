@@ -1,3 +1,7 @@
+## 0.1.10
+
+- Improved README.
+
 ## 0.1.9
 
 - Fix: saving request data in copyWith
