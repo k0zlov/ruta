@@ -1,3 +1,7 @@
+## 0.1.9
+
+- Fix: saving request data in copyWith
+
 ## 0.1.8
 
 - Adapting default run function

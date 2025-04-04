@@ -9,6 +9,7 @@ class Request {
     Map<String, Object>? headers,
     Object? body,
     Encoding? encoding,
+    Map<String, dynamic>? data,
   }) : this._(
           shelf.Request(
             method,
@@ -17,6 +18,7 @@ class Request {
             body: body,
             encoding: encoding,
           ),
+          data,
         );
 
   /// An HTTP DELETE request.
@@ -75,7 +77,7 @@ class Request {
           encoding: encoding,
         );
 
-  Request._(this._request);
+  Request._(this._request, [Map<String, dynamic>? data]) : data = data ?? {};
 
   shelf.Request _request;
 
@@ -141,6 +143,7 @@ class Request {
   Request copyWith({
     Map<String, Object?>? headers,
     Map<String, Object?>? context,
+    Map<String, dynamic>? newData,
     String? path,
     Object? body,
   }) {
@@ -151,11 +154,12 @@ class Request {
         body: body,
         context: context,
       ),
+      data,
     );
   }
 
   /// Request Data after validation
-  final Map<String, dynamic> data = {};
+  final Map<String, dynamic> data;
 
   /// Validates the request body and query parameters against the provided schemas.
   Future<ValidationResult> validate({
