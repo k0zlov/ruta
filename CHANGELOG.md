@@ -1,3 +1,7 @@
+## 0.1.11
+
+- Update default 'authRequired' to false in endpoints
+
 ## 0.1.10
 
 - Improved README.
