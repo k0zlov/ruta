@@ -1,3 +1,7 @@
+## 0.1.13
+
+- Roll back dependencies
+
 ## 0.1.12
 
 - Adding support for form data
