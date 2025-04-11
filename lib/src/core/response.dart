@@ -1,3 +1,6 @@
+// Parts of this file are derived from dart_frog (https://github.com/VeryGoodOpenSource/dart_frog)
+// Licensed under MIT License.
+
 part of '_internal.dart';
 
 /// An HTTP response for the Ruta framework.
@@ -132,6 +135,11 @@ class Response {
   /// This object could be anything that can be represented by JSON
   /// (e.g., a map, a list, a string, a number, a bool).
   Future<dynamic> json() async => jsonDecode(await body());
+
+  /// Returns a [Future] containing the form data as a [Map].
+  Future<FormData> formData() {
+    return parseFormData(headers: headers, body: body, bytes: bytes);
+  }
 
   /// Creates a new [Response] by copying existing values and applying specified
   /// changes.

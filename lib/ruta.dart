@@ -18,6 +18,7 @@ export 'package:ruta/src/core/_internal.dart'
         toShelfHandler,
         toShelfMiddleware;
 export 'package:ruta/src/core/api_exceptions.dart';
+export 'package:ruta/src/core/body_parsers/body_parsers.dart';
 export 'package:ruta/src/core/default_ruta_run.dart';
 export 'package:ruta/src/core/endpoint.dart';
 export 'package:ruta/src/core/get_or_async.dart';

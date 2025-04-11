@@ -138,6 +138,11 @@ class Request {
   /// (e.g., a map, a list, a string, a number, a bool).
   Future<dynamic> json() async => jsonDecode(await body());
 
+  /// Returns a [Future] containing the form data as a [Map].
+  Future<FormData> formData() {
+    return parseFormData(headers: headers, body: body, bytes: bytes);
+  }
+
   /// Creates a new [Request] by copying existing values and applying specified
   /// changes.
   Request copyWith({
