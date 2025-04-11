@@ -1,3 +1,7 @@
+## 0.1.12
+
+- Adding support for form data
+
 ## 0.1.11
 
 - Update default 'authRequired' to false in endpoints
