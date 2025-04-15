@@ -1,3 +1,7 @@
+## 0.1.16
+
+- Updated the default HTTP method for the Endpoint PUT constructor to PUT instead of POST.
+
 ## 0.1.15
 
 - Fixing request validation

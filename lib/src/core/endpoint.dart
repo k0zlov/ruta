@@ -83,7 +83,7 @@ class Endpoint {
     this.description,
     this.body,
     this.query,
-  }) : method = HttpMethod.post;
+  }) : method = HttpMethod.put;
 
   /// A named constructor to create an HTTP DELETE endpoint.
   Endpoint.delete({
