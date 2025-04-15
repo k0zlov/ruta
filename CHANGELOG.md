@@ -1,3 +1,7 @@
+## 0.1.15
+
+- Fixing request validation
+
 ## 0.1.14
 
 - Saving field value after validation

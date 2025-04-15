@@ -40,7 +40,7 @@ class Field<T> {
   final List<Field<Object>> children;
 
   /// Value of field after validation
-  late final T value;
+  T? value;
 
   /// Converts a raw JSON value into the expected type `T`.
   T _fromJson(dynamic json) {
