@@ -202,7 +202,7 @@ class Request {
           );
         }
 
-        data[field.name] = value;
+        data[field.name] = field.value;
         checkedParams.add(field.name);
       }
     }

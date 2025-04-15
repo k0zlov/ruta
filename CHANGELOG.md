@@ -1,3 +1,7 @@
+## 0.1.14
+
+- Saving field value after validation
+
 ## 0.1.13
 
 - Roll back dependencies

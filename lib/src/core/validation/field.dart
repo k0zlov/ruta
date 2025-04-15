@@ -39,6 +39,9 @@ class Field<T> {
   /// A list of child fields (only applicable for `Map<String, dynamic>` fields).
   final List<Field<Object>> children;
 
+  /// Value of field after validation
+  late final T value;
+
   /// Converts a raw JSON value into the expected type `T`.
   T _fromJson(dynamic json) {
     if (json == null) {
@@ -133,6 +136,7 @@ class Field<T> {
 
       // Return valid result if no errors were found
       if (errors.isEmpty) {
+        this.value = typedValue;
         return ValidationResult.valid();
       }
 
