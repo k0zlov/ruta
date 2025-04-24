@@ -30,3 +30,4 @@ export 'package:ruta/src/core/route.dart';
 export 'package:ruta/src/core/validation/field.dart';
 export 'package:ruta/src/core/validation/validation_result.dart';
 export 'package:ruta/src/core/validation/validator.dart';
+export 'package:ruta/src/core/web_socket.dart';
