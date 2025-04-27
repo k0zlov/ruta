@@ -1,3 +1,7 @@
+## 0.1.19
+
+- Fix mutable default parameters in request validation
+
 ## 0.1.18
 
 - Clearing Field value after validation

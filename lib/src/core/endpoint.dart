@@ -170,8 +170,8 @@ class Endpoint {
     return (Request request) async {
       // Validate the request body and query parameters
       final result = await request.validate(
-        body: body ?? [],
-        query: query ?? [],
+        body: [...(body ?? [])],
+        query: [...(query ?? [])],
       );
 
       Handler handlerWithMiddleware = handler;
