@@ -133,10 +133,21 @@ class Request {
     return completer.future;
   }
 
-  /// Returns a [Future] containing the body text parsed as a JSON object.
-  /// This object could be anything that can be represented by JSON
-  /// (e.g., a map, a list, a string, a number, a bool).
-  Future<dynamic> json() async => jsonDecode(await body());
+  /// Returns a [Future] containing the JSON-decoded body.
+  /// Updates the `data` field to ensure it reflects the freshly parsed body.
+  Future<dynamic> json() async {
+    // Parse the body into JSON
+    final rawBody = await body(); // Reads the raw body
+    final parsedBody = jsonDecode(rawBody);
+
+    // Ensure `data` is cleared and updated with the latest parsed body
+    data.clear();
+    if (parsedBody is Map<String, dynamic>) {
+      data.addAll(parsedBody); // Sync `data` with the parsed JSON body
+    }
+
+    return parsedBody;
+  }
 
   /// Returns a [Future] containing the form data as a [Map].
   Future<FormData> formData() {
@@ -176,6 +187,9 @@ class Request {
     final errors = <String>[];
     final Set<String> checkedParams = {};
 
+    // Clear `data` to avoid stale values before validation begins
+    data.clear();
+
     void validateParams({
       required String name,
       required Map<String, dynamic> target,
@@ -204,6 +218,7 @@ class Request {
 
         data[field.name] = field.value;
         checkedParams.add(field.name);
+        field.value = null;
       }
     }
 

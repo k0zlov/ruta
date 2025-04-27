@@ -1,3 +1,7 @@
+## 0.1.18
+
+- Clearing Field value after validation
+
 ## 0.1.17
 
 - WebSocket
