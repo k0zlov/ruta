@@ -1,3 +1,7 @@
+## 0.1.20
+
+- Updating dependencies
+
 ## 0.1.19
 
 - Fix mutable default parameters in request validation

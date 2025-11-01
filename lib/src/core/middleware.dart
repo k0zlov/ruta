@@ -7,9 +7,8 @@ typedef MiddlewareFunc = Handler Function(Handler handler);
 /// Middleware class that wraps simple middleware function
 class Middleware {
   /// Middleware constructor, defaults middleware
-  Middleware({
-    MiddlewareFunc? middleware,
-  }) : middleware = middleware ?? ((_) => _);
+  Middleware({MiddlewareFunc? middleware})
+    : middleware = middleware ?? ((Handler h) => h);
 
   /// Default Middleware that will be used in call function
   final MiddlewareFunc middleware;
