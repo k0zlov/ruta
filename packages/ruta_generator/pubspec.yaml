@@ -1,0 +1,23 @@
+name: ruta_generator
+description: Generator for ruta framework
+resolution: workspace
+version: 0.1.11
+repository: https://github.com/k0zlov/ruta/tree/main/packages/ruta_generator
+
+environment:
+  sdk: ^3.10.3
+
+dependencies:
+  ruta: ^0.1.20
+  build: ^4.0.0
+  collection: ^1.19.1
+  glob: ^2.1.3
+  shelf_swagger_ui: ^2.0.0
+  injectable: ^2.5.0
+  analyzer: ^8.4.0
+  get_it: ^9.2.0
+
+dev_dependencies:
+  very_good_analysis: ^5.1.0
+  test: ^1.24.0
+  build_runner: ^2.10.4

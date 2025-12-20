@@ -1,0 +1,7 @@
+builders:
+  rutaGenerator:
+    import: "package:ruta_generator/builder.dart"
+    builder_factories: [ "rutaGenerator" ]
+    build_extensions: { ".dart": [ ".ruta/server.dart" ] }
+    auto_apply: dependents
+    build_to: source
