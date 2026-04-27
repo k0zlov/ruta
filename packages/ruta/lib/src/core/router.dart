@@ -1,6 +1,6 @@
 // Copyright 2019 Google LLC
 // Copyright 2022 Very Good Ventures
-// Copyright 2025 kozlov
+// Copyright 2025 k0zlov
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 //
 // Original Source: https://github.com/dart-lang/shelf/blob/master/pkgs/shelf_router/lib/src/router.dart
 // Modified: For interoperability with package:dart_frog
+// Modified: For interoperability with package:ruta
 
 part of '_internal.dart';
 
@@ -47,8 +48,7 @@ class Router {
   ///
   /// The [notFoundHandler] will be invoked for requests where no matching route
   /// was found. By default, a simple 404 response will be used.
-  Router({Handler? notFoundHandler})
-      : _notFoundHandler = notFoundHandler ?? _defaultNotFound;
+  Router({Handler? notFoundHandler}) : _notFoundHandler = notFoundHandler ?? _defaultNotFound;
   final List<RouterEntry> _routes = [];
   final Handler _notFoundHandler;
 
@@ -60,9 +60,7 @@ class Router {
   void add(String verb, String route, Handler handler) {
     final String modifiedVerb = verb.toUpperCase();
 
-    final bool isHttpMethod =
-        HttpMethod.values.firstWhereOrNull((e) => e.value == modifiedVerb) !=
-            null;
+    final bool isHttpMethod = HttpMethod.values.firstWhereOrNull((e) => e.value == modifiedVerb) != null;
 
     if (!isHttpMethod) {
       throw ArgumentError.value(verb, 'verb', 'expected a valid HTTP method');
@@ -103,8 +101,7 @@ class Router {
   /// Route incoming requests to registered handlers.
   Future<Response> call(Request request) async {
     for (final route in _routes) {
-      if (route.verb != request.method.name.toUpperCase() &&
-          route.verb != 'ALL') {
+      if (route.verb != request.method.name.toUpperCase() && route.verb != 'ALL') {
         continue;
       }
       final params = route.match('/${request.url.path}');
@@ -165,8 +162,8 @@ class _RouteNotFoundResponse extends Response {
   Future<String> body() async => _message;
 
   @override
-  Response copyWith({Map<String, Object?>? headers, Object? body}) {
-    return super.copyWith(headers: headers, body: body ?? _message);
+  Response copyWith({Map<String, Object?>? headers, Object? body, Map<String, Object>? context}) {
+    return super.copyWith(headers: headers, body: body ?? _message, context: context);
   }
 }
 
@@ -198,23 +195,13 @@ class RouterEntry {
   /// - [handler]: The function that handles requests matching the route.
   /// - [middleware]: Optional middleware to wrap the handler.
   /// - [mounted]: Whether this route is part of a mounted sub-router.
-  factory RouterEntry(
-    String verb,
-    String route,
-    Handler handler, {
-    MiddlewareFunc? middleware,
-    bool mounted = false,
-  }) {
+  factory RouterEntry(String verb, String route, Handler handler, {MiddlewareFunc? middleware, bool mounted = false}) {
     // Default middleware to a pass-through function if none is provided.
     middleware ??= (Handler fn) => fn;
 
     // Ensure that the route starts with a `/` to enforce proper URL structure.
     if (!route.startsWith('/')) {
-      throw ArgumentError.value(
-        route,
-        'route',
-        'expected route to start with a slash',
-      );
+      throw ArgumentError.value(route, 'route', 'expected route to start with a slash');
     }
 
     final params = <String>[];
@@ -227,26 +214,14 @@ class RouterEntry {
       if (m[2] != null) {
         params.add(m[2]!);
         if (m[3] != null && !_isNoCapture(m[3]!)) {
-          throw ArgumentError.value(
-            route,
-            'route',
-            'expression for "${m[2]}" is capturing',
-          );
+          throw ArgumentError.value(route, 'route', 'expression for "${m[2]}" is capturing');
         }
         pattern += '(${m[3] ?? '[^/]+'})';
       }
     }
     final routePattern = RegExp('^$pattern\$');
 
-    return RouterEntry._(
-      verb,
-      route,
-      handler,
-      middleware,
-      routePattern,
-      params,
-      mounted,
-    );
+    return RouterEntry._(verb, route, handler, middleware, routePattern, params, mounted);
   }
 
   /// Private constructor used by the factory method.
@@ -261,8 +236,7 @@ class RouterEntry {
   );
 
   /// Regular expression parser for extracting route parameters.
-  static final RegExp _parser =
-      RegExp(r'([^<]*)(?:<([^>|]+)(?:\|([^>]*)?)?>)?');
+  static final RegExp _parser = RegExp(r'([^<]*)(?:<([^>|]+)(?:\|([^>]*)?)?>)?');
 
   /// HTTP method
   final String verb;
@@ -290,9 +264,7 @@ class RouterEntry {
   /// Invokes the registered handler for this route.
   /// Applies middleware and extracts parameters before executing the handler.
   Future<Response> invoke(Request request, Map<String, String> params) async {
-    final shelf.Request shelfRequest = request._request.change(
-      context: {'shelf_router/params': params},
-    );
+    final shelf.Request shelfRequest = request._request.change(context: {'shelf_router/params': params});
 
     final updatedRequest = Request._(shelfRequest);
 

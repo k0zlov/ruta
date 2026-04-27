@@ -1,3 +1,8 @@
+## 0.1.22
+
+- **Response Context**: Fixed an issue where context updates on `Response` instances were lost due to immutability.
+- **Response.copyWith**: Added optional `context` parameter to allow metadata propagation through middleware chains.
+
 ## 0.1.21
 
 - Updating dependencies

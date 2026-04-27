@@ -6,19 +6,8 @@ part of '_internal.dart';
 /// An HTTP response for the Ruta framework.
 class Response {
   /// Create a [Response] with a string body.
-  Response({
-    int statusCode = 200,
-    String? body,
-    Map<String, Object>? headers,
-    Encoding? encoding,
-  }) : this._(
-          shelf.Response(
-            statusCode,
-            body: body,
-            headers: headers,
-            encoding: encoding,
-          ),
-        );
+  Response({int statusCode = 200, String? body, Map<String, Object>? headers, Encoding? encoding})
+    : this._(shelf.Response(statusCode, body: body, headers: headers, encoding: encoding));
 
   Response._(this._response);
 
@@ -34,28 +23,17 @@ class Response {
     Map<String, Object>? headers,
     bool bufferOutput = true,
   }) : this._(
-          shelf.Response(
-            statusCode,
-            body: body,
-            headers: headers,
-            context: !bufferOutput
-                ? {Response.shelfBufferOutputContextKey: bufferOutput}
-                : null,
-          ),
-        );
+         shelf.Response(
+           statusCode,
+           body: body,
+           headers: headers,
+           context: !bufferOutput ? {Response.shelfBufferOutputContextKey: bufferOutput} : null,
+         ),
+       );
 
   /// Create a [Response] with a byte array body.
-  Response.bytes({
-    int statusCode = 200,
-    List<int>? body,
-    Map<String, Object>? headers,
-  }) : this._(
-          shelf.Response(
-            statusCode,
-            body: body,
-            headers: headers,
-          ),
-        );
+  Response.bytes({int statusCode = 200, List<int>? body, Map<String, Object>? headers})
+    : this._(shelf.Response(statusCode, body: body, headers: headers));
 
   /// Create a [Response] with a JSON-encoded body.
   Response.json({
@@ -63,14 +41,14 @@ class Response {
     Object? body = const <String, dynamic>{},
     Map<String, Object> headers = const <String, Object>{},
   }) : this(
-          statusCode: statusCode,
-          body: body != null ? jsonEncode(body) : null,
-          headers: {
-            ...headers,
-            if (!headers.containsKey(HttpHeaders.contentTypeHeader))
-              HttpHeaders.contentTypeHeader: ContentType.json.value,
-          },
-        );
+         statusCode: statusCode,
+         body: body != null ? jsonEncode(body) : null,
+         headers: {
+           ...headers,
+           if (!headers.containsKey(HttpHeaders.contentTypeHeader))
+             HttpHeaders.contentTypeHeader: ContentType.json.value,
+         },
+       );
 
   /// Create a [Response] Moved Permanently (301).
   ///
@@ -81,15 +59,7 @@ class Response {
     String? body,
     Map<String, Object> headers = const <String, Object>{},
     Encoding? encoding,
-  }) : this(
-          statusCode: 301,
-          headers: {
-            ...headers,
-            'Location': location,
-          },
-          body: body,
-          encoding: encoding,
-        );
+  }) : this(statusCode: 301, headers: {...headers, 'Location': location}, body: body, encoding: encoding);
 
   /// A `shelf.Response.context` key used to determine if the
   /// [HttpResponse.bufferOutput] should be enabled or disabled.
@@ -114,15 +84,12 @@ class Response {
   /// Returns a [Future] containing the body as a [String].
   Future<String> body() async {
     const responseBodyKey = 'ruta.response.body';
-    final bodyFromContext =
-        _response.context[responseBodyKey] as Completer<String>?;
+    final bodyFromContext = _response.context[responseBodyKey] as Completer<String>?;
     if (bodyFromContext != null) return bodyFromContext.future;
 
     final completer = Completer<String>();
     try {
-      _response = _response.change(
-        context: {..._response.context, responseBodyKey: completer},
-      );
+      _response = _response.change(context: {..._response.context, responseBodyKey: completer});
       completer.complete(await _response.readAsString());
     } catch (error, stackTrace) {
       completer.completeError(error, stackTrace);
@@ -143,7 +110,7 @@ class Response {
 
   /// Creates a new [Response] by copying existing values and applying specified
   /// changes.
-  Response copyWith({Map<String, Object?>? headers, Object? body}) {
-    return Response._(_response.change(headers: headers, body: body));
+  Response copyWith({Map<String, Object?>? headers, Object? body, Map<String, Object>? context}) {
+    return Response._(_response.change(headers: headers, body: body, context: context));
   }
 }
